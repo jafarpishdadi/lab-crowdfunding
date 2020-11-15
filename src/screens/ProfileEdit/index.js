@@ -10,12 +10,13 @@ import styles from './styles'
 
 const ProfileEdit = ({ navigation, route }) => {
 
+  const {user, signinMethod} = route.params
   let input = useRef(null)
   let camera =  useRef(null)
   const [editable, setEditable] = useState(false)
   const [token, setToken] = useState('')
-  const [name, setName] = useState(route.params.user.name)
-  const [email, setEmail] = useState(route.params.user.email)
+  const [name, setName] = useState(user.name)
+  const [email, setEmail] = useState(user.email)
   const [isVisible, setIsVisible] = useState(false)
   const [type, setType] = useState('back')
   const [photo, setPhoto] = useState(null)
@@ -65,8 +66,9 @@ const ProfileEdit = ({ navigation, route }) => {
       }
     })
     .then( res => {
-      console.log(res)
-      navigation.goBack()
+      navigation.replace('Profile', {
+        signinMethod
+      })
     })
     .catch( err => {
       console.log({err})
@@ -103,7 +105,7 @@ const ProfileEdit = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image source={photo ? {uri: photo.uri} : { uri: route.params.user.photo}} style={styles.photo} />
+        <Image source={photo ? {uri: photo.uri} : { uri: user.photo}} style={styles.photo} />
         <TouchableOpacity style={styles.rounded} activeOpacity={0.7} onPress={() => setIsVisible(true)}>
           <Icon name="camera-outline" size={15} color={Colors.white} />
         </TouchableOpacity>

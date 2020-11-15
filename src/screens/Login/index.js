@@ -1,15 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar, TextInput, Button } from 'react-native'
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
 import Colors from '../../styles/Colors';
+import EasyGoogleButton, { configureGoogleSignin } from '../../components/EasyGoogleButton';
 
 
 const Login = ({ navigation }) => {
 
   const [email, setEmail] = useState('zakkymf@gmail.com')
   const [password, setPassword] = useState('123456')
+
+  useEffect(() => {
+    configureGoogleSignin()
+  }, [])
 
   const saveToken = async (token) => {
     try {
@@ -66,10 +71,12 @@ const Login = ({ navigation }) => {
           title="LOGIN"
           onPress={onLoginPress}
           />
+
+        <EasyGoogleButton navigation={navigation} />
         
         <Text style={styles.registerText}>
           Do not have account yet?
-          <Text onPress={()=>navigation.navigate('Register')} style={styles.registerLink}> Register</Text>
+          <Text onPress={()=>navigation.replace('Register')} style={styles.registerLink}> Register</Text>
         </Text>
       </View>
 
@@ -105,6 +112,5 @@ const styles = StyleSheet.create({
   registerLink: {
     fontWeight: 'bold',
     color: Colors.blue,
-
-  }
+  },
 }) 

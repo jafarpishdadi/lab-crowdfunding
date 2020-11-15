@@ -1,15 +1,20 @@
-import React, {useState} from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, TextInput, Button } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, TextInput, Button, Alert } from 'react-native'
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
 import Colors from '../../styles/Colors';
+import EasyGoogleButton, { configureGoogleSignin } from '../../components/EasyGoogleButton';
 
 
 const Register = ({ navigation }) => {
 
   const [email, setEmail] = useState('')
   const [fullname, setFullname] = useState('Zakky')
+
+  useEffect(() => {
+    configureGoogleSignin()
+  }, [])
 
   const onRegisterPress = () => {
     let data = { email, name: fullname }
@@ -25,7 +30,24 @@ const Register = ({ navigation }) => {
     })
     .catch(err => {
         console.log({err})
-        return alert(err.response.data && err.response.data.message || 'Internal server error')
+        let errRes = err.response.data
+        if (errRes && errRes.errors.email[0] == 'The email has already been taken.') {
+          return Alert.alert('Warning', 'Email has registered. Will you verify email instead?', [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { 
+                text: "OK", onPress: () => navigation.navigate('OTPVerification', { 
+                  user: data
+                }) 
+              }
+            ], 
+            { cancelable: true }
+          );
+        } 
+        return alert(errRes && errRes.message || 'Internal server error')
     })
   }
 
@@ -56,10 +78,17 @@ const Register = ({ navigation }) => {
           title="REGISTER"
           onPress={onRegisterPress}
           />
+
+        <EasyGoogleButton navigation={navigation} />
         
         <Text style={styles.registerText}>
           Already have an account?
-          <Text onPress={()=>navigation.navigate('Login')} style={styles.registerLink}> Login</Text>
+          <Text onPress={()=>navigation.replace('Login')} style={styles.registerLink}> Login</Text>
+        </Text>
+      </View>
+      <View style={styles.termContainer}>
+        <Text style={styles.termText}>
+          With Register, I have accept Term & Condition CrowdFunding.com 
         </Text>
       </View>
 
@@ -73,6 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
+    padding: 20,
   },
   textLogoContainer: {
     marginTop: '20%',
@@ -85,7 +115,6 @@ const styles = StyleSheet.create({
     color: Colors.blue
   },
   formContainer: {
-    paddingHorizontal: '5%',
     marginTop: 50
   },
   registerText: {
@@ -95,6 +124,12 @@ const styles = StyleSheet.create({
   registerLink: {
     fontWeight: 'bold',
     color: Colors.blue,
-
+  },
+  termContainer: {
+    marginTop: 150,
+  },
+  termText: {
+    textAlign: 'center',
+    color: Colors.grey
   }
 }) 

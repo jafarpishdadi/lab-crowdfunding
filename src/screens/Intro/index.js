@@ -57,10 +57,10 @@ const Intro = ({ navigation }) => {
         </View>
 
         <View style={styles.btnContainer}>
-          <Button style={styles.btnLogin} onPress={() => navigation.navigate('Login')} >
+          <Button style={styles.btnLogin} onPress={() => navigation.replace('Login')} >
             <Text style={styles.btnTextLogin}>LOGIN</Text>
           </Button>
-          <Button style={styles.btnRegister} onPress={() => navigation.navigate('Register')} ><
+          <Button style={styles.btnRegister} onPress={() => navigation.replace('Register')} ><
             Text style={styles.btnTextRegister}>REGISTER</Text>
           </Button>
         </View>

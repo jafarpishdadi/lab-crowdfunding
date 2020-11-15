@@ -25,10 +25,22 @@ const OTPVerification = ({ navigation, route }) => {
     
     })
     .catch(err => {
-        console.log({err}, route.params)
-        navigation.navigate('PasswordUpdate', { 
-          user: userInfo
-        })
+        console.log({err})
+        return alert(err.response.data && err.response.data.message || 'Internal server error')
+    })
+  }
+
+  const onResendPress = () => {
+    let data = { email: userInfo.email }
+    Axios.post(`${SanberUri.api}/auth/regenerate-otp`, data, {
+      timeout: 20000
+    })
+    .then((res) => {
+      alert('OTP code has resend')
+    
+    })
+    .catch(err => {
+        console.log({err})
         return alert(err.response.data && err.response.data.message || 'Internal server error')
     })
   }
@@ -55,7 +67,7 @@ const OTPVerification = ({ navigation, route }) => {
 
       <View style={styles.resendWrapper}>
         <Text style={{ color: Colors.grey }}>Don't got verification code? </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onResendPress}>
           <Text style={styles.linkResend}> Resend Code </Text>
         </TouchableOpacity>
       </View>

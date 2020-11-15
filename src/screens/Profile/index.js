@@ -5,6 +5,8 @@ import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
 import Colors from '../../styles/Colors';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import styles from './styles'
 
 
 const Profile = ({ navigation, route }) => {
@@ -64,12 +66,13 @@ const Profile = ({ navigation, route }) => {
         console.log(err)
       }
     }
-    navigation.navigate('Login')
+    navigation.replace('Login')
   }
 
   const onEditProfilePress = () => {
     navigation.navigate('ProfileEdit', {
-      user
+      user,
+      signinMethod
     })
   }
 
@@ -79,7 +82,7 @@ const Profile = ({ navigation, route }) => {
       <StatusBar backgroundColor={Colors.blue} barStyle="light-content" />
       {/* Toolbar */}
       <View >
-        { user 
+        { signinMethod === 'SANBER' 
         ?
         <TouchableOpacity style={styles.profile} onPress={onEditProfilePress}>
           <Image source={{uri: user.photo}} style={styles.img} />
@@ -89,7 +92,10 @@ const Profile = ({ navigation, route }) => {
         </TouchableOpacity>
         :
         <View style={styles.profile}>
-          <Image source={{uri: 'http://placeimg.com/100/100/people'}} style={styles.img} />
+          <Image source={{uri: user.photo || 'http://placeimg.com/100/100/people' }} style={styles.img} />
+          <Text style={styles.profileText}>{user && user.name} {'\n'}
+            <Text style={styles.profileTextSub}>{user && user.email}</Text>
+          </Text>
         </View>
 
         }
@@ -143,57 +149,3 @@ const Profile = ({ navigation, route }) => {
 }
 
 export default Profile
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#00BCD4',
-  },
-  headerText: {
-    margin: 20,
-    fontSize: 24,
-    color: '#fff',
-  },
-  profile: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  img: {
-    width: 60,
-    height: 60,
-    borderWidth: 1,
-    borderRadius: 30,
-  },
-  profileText: {
-    marginLeft: 20,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  profileTextSub: {
-    fontSize: 14,
-    fontWeight: 'normal',
-  },
-  menu: {
-    marginVertical: 4,
-  },
-  subItemSaldo: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    padding: 20,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  subItem: {
-    marginBottom: 4,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    padding: 20,
-    alignItems: 'center',
-  },
-  menuText: {
-    marginLeft: 24,
-    fontSize: 14,
-  },
-
-});

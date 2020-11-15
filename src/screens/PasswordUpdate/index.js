@@ -27,8 +27,8 @@ const PasswordUpdate = ({ navigation, route }) => {
     })
     .then((res) => {
       console.log(res, route.params)
-      navigation.navigate('Login')
-    
+      navigation.popToTop()
+      navigation.replace('Login')
     })
     .catch(err => {
         console.log({err}, route.params)
@@ -45,7 +45,7 @@ const PasswordUpdate = ({ navigation, route }) => {
           <TextInput
             value={password}
             onChangeText={(value) => setPassword(value)}
-            underlineColorAndroid="#c6c6c6"
+            underlineColorAndroid={Colors.lightGrey}
             placeholder="Password"
             secureTextEntry={hidePassword}
           />
@@ -58,7 +58,7 @@ const PasswordUpdate = ({ navigation, route }) => {
           <TextInput
             value={passwordConfirm}
             onChangeText={(value) => setPasswordConfirm(value)}
-            underlineColorAndroid="#c6c6c6"
+            underlineColorAndroid={Colors.lightGrey}
             placeholder="Re-type Password"
             secureTextEntry={hidePasswordConfirm}
           />

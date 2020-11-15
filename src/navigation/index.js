@@ -14,7 +14,7 @@ import ProfileEdit from '../screens/ProfileEdit';
 const Stack = createStackNavigator()
 
 const MainNavigation = () => (
-  <Stack.Navigator >
+  <Stack.Navigator>
     <Stack.Screen name="Intro" component={Intro} options={{ headerShown: false}} />
     <Stack.Screen name="Login" component={Login} options={{ headerShown: false}} />
     <Stack.Screen name="Register" component={Register} options={{ headerShown: false}} />

@@ -40,14 +40,14 @@ const Register = ({ navigation }) => {
         <TextInput
           value={email}
           onChangeText={(email) => setEmail(email)}
-          underlineColorAndroid="#c6c6c6"
+          underlineColorAndroid={Colors.lightGrey}
           placeholder="Email"
         />
         <Text>Full name</Text>
         <TextInput
           value={fullname}
           onChangeText={(fullname) => setFullname(fullname)}
-          underlineColorAndroid="#c6c6c6"
+          underlineColorAndroid={Colors.lightGrey}
           placeholder="Full name"
         />
 

@@ -27,7 +27,9 @@ const Login = ({ navigation }) => {
     .then((res) => {
       console.log(res)
       saveToken(res.data.data.token)
-      navigation.navigate('Profile')
+      navigation.navigate('Profile', {
+        signinMethod: 'SANBER'
+      })
     
     })
     .catch(err => {
@@ -43,18 +45,18 @@ const Login = ({ navigation }) => {
         <Text style={styles.textLogo}>Login Screen</Text>
       </View>
       <View style={styles.formContainer}>
-        <Text>Username</Text>
+        <Text>Username or Email</Text>
         <TextInput
           value={email}
           onChangeText={(email) => setEmail(email)}
-          underlineColorAndroid="#c6c6c6"
+          underlineColorAndroid={Colors.lightGrey}
           placeholder="Username or Email"
         />
         <Text>Password</Text>
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
-          underlineColorAndroid="#c6c6c6"
+          underlineColorAndroid={Colors.lightGrey}
           placeholder="Password"
           secureTextEntry
         />

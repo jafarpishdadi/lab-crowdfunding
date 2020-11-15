@@ -4,26 +4,31 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
+import Colors from '../../styles/Colors';
 
 
-const Profile = ({ navigation }) => {
+const Profile = ({ navigation, route }) => {
 
   const [user, setUser] = useState({})
+  const signinMethod = route.params.signinMethod
 
   useEffect(() => {
-    getToken()
+    if (signinMethod === 'GOOGLE') getGoogleUser()
+    else if(signinMethod === 'SANBER') getSanberUser()
   }, [])
 
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token')
-      getProfile(token)
+      return token
     } catch (err) {
       console.log(err)
     }
   }
 
-  const getProfile = (token) => {
+  const getSanberUser = async () => {
+    const token = await getToken()
+
     Axios.get(`${SanberUri.api}/profile/get-profile`, {
       timeout: 20000,
       headers: {
@@ -40,30 +45,54 @@ const Profile = ({ navigation }) => {
     })
   }
 
-  const onLogoutPress = async () => {
-    try {
-      await AsyncStorage.removeItem('token')
-      navigation.navigate('Login')
+  const getGoogleUser = async () => {
+    const userInfo = await GoogleSignin.signInSilently()
+    setUser(userInfo.user)
+  }
 
-    } catch (err) {
-      console.log(err)
+  const onLogoutPress = async () => {
+    if (user) {
+      try {
+        if (signinMethod === 'GOOGLE') {
+          await GoogleSignin.revokeAccess()
+          await GoogleSignin.signOut()
+  
+        } else if(signinMethod === 'SANBER') {
+          await AsyncStorage.removeItem('token')
+        }  
+      } catch (err) {
+        console.log(err)
+      }
     }
+    navigation.navigate('Login')
+  }
+
+  const onEditProfilePress = () => {
+    navigation.navigate('ProfileEdit', {
+      user
+    })
   }
 
   
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#00BCD4" />
+      <StatusBar backgroundColor={Colors.blue} barStyle="light-content" />
       {/* Toolbar */}
       <View >
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Account</Text>
+        { user 
+        ?
+        <TouchableOpacity style={styles.profile} onPress={onEditProfilePress}>
+          <Image source={{uri: user.photo}} style={styles.img} />
+          <Text style={styles.profileText}>{user && user.name} {'\n'}
+            <Text style={styles.profileTextSub}>{user && user.email}</Text>
+          </Text>
+        </TouchableOpacity>
+        :
+        <View style={styles.profile}>
+          <Image source={{uri: 'http://placeimg.com/100/100/people'}} style={styles.img} />
         </View>
 
-        <View style={styles.profile}>
-          <Image source={{uri: user.photo}} style={styles.img} />
-          <Text style={styles.profileText}>{user.name}</Text>
-        </View>
+        }
       </View>
 
       {/* Balance */}
@@ -140,6 +169,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  profileTextSub: {
+    fontSize: 14,
+    fontWeight: 'normal',
   },
   menu: {
     marginVertical: 4,

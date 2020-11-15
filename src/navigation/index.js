@@ -7,7 +7,8 @@ import Login from '../screens/Login/index';
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import OTPVerification from '../screens/OTPVerification';
-import PasswordUpdate from '../screens/PasswordUpdate/index';
+import PasswordUpdate from '../screens/PasswordUpdate';
+import ProfileEdit from '../screens/ProfileEdit';
 
 
 const Stack = createStackNavigator()
@@ -20,6 +21,7 @@ const MainNavigation = () => (
     <Stack.Screen name="OTPVerification" component={OTPVerification} options={{ headerShown: true, title: 'Email Verification'}} />
     <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} options={{ headerShown: true, title: 'Account Security'}} />
     <Stack.Screen name="Profile" component={Profile} options={{ headerShown: true, title: 'My Profile'}} />
+    <Stack.Screen name="ProfileEdit" component={ProfileEdit} options={{ headerShown: true, title: 'Profile Setting'}} />
   </Stack.Navigator>
 )
 

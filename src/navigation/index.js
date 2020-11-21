@@ -18,6 +18,7 @@ import Colors from '../styles/Colors';
 import Payment from '../screens/Payment';
 import DonationDetail from '../screens/DonationDetail';
 import Help from '../screens/Help';
+import Statistic from '../screens/Statistic/index';
 
 
 const Stack = createStackNavigator()
@@ -47,7 +48,7 @@ const HomeNavigation = () => {
           headerTintColor: 'white' 
         }} 
       />
-      {/* <Stack.Screen name="Statistic" component={Statistic} options={{ headerShown: true }} /> */}
+      <Stack.Screen name="Statistic" component={Statistic} options={{ headerShown: true }} />
     </Stack.Navigator>
   )
 }

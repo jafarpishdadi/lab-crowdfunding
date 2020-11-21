@@ -3,9 +3,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Intro from '../screens/Intro/index';
-import SplashScreen from '../screens/SplashScreen/index';
-import Login from '../screens/Login/index';
+import Intro from '../screens/Intro';
+import SplashScreen from '../screens/SplashScreen';
+import Login from '../screens/Login';
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import OTPVerification from '../screens/OTPVerification';
@@ -17,6 +17,7 @@ import Donation from '../screens/Donation';
 import Colors from '../styles/Colors';
 import Payment from '../screens/Payment';
 import DonationDetail from '../screens/DonationDetail';
+import Help from '../screens/Help';
 
 
 const Stack = createStackNavigator()
@@ -27,7 +28,7 @@ const ProfileNavigation = () => {
     <Stack.Navigator initialRouteName="Profile">
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       <Stack.Screen name="ProfileEdit" component={ProfileEdit} options={{ headerShown: true }} />
-      {/* <Stack.Screen name="Help" component={Help} options={{ headerShown: true }} /> */}
+      <Stack.Screen name="Help" component={Help} options={{ headerShown: true }} />
     </Stack.Navigator>
   )
 }

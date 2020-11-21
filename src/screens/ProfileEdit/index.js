@@ -1,30 +1,40 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useRef, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Modal } from 'react-native'
+import colors from '../../styles/Colors'
+import Icon from 'react-native-vector-icons/Feather'
 import { RNCamera } from 'react-native-camera';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunitry from 'react-native-vector-icons/MaterialCommunityIcons'
 import Axios from 'axios'
-import SanberUri from '../../api/SanberUri';
-import Colors from '../../styles/Colors';
-import styles from './styles'
+import SanberUri from '../../api/SanberUri'
+
 
 const ProfileEdit = ({ navigation, route }) => {
 
-  const {user, signinMethod} = route.params
   let input = useRef(null)
   let camera =  useRef(null)
   const [editable, setEditable] = useState(false)
   const [token, setToken] = useState('')
-  const [name, setName] = useState(user.name)
-  const [email, setEmail] = useState(user.email)
+  const [name, setName] = useState(route.params.user.name)
+  const [email, setEmail] = useState(route.params.user.email)
   const [isVisible, setIsVisible] = useState(false)
   const [type, setType] = useState('back')
   const [photo, setPhoto] = useState(null)
 
+  const toggleCamera = () =>setType(type == 'back' ? 'front' : 'back')
+
+  const takePicture = async() => {
+    const options = { quality: 0.5, base64: true }
+    if(camera) {
+      const data = await camera.current.takePictureAsync(options)
+      setPhoto(data)
+      setIsVisible(false)
+    }
+  }
+
   useEffect(() => {
     getToken()
   }, [])
-  
   const getToken = async() => {
     try {
       const token = await AsyncStorage.getItem('token')
@@ -37,16 +47,7 @@ const ProfileEdit = ({ navigation, route }) => {
     }
   }
 
-  const toggleCamera = () =>setType(type == 'back' ? 'front' : 'back')
-
-  const takePicture = async() => {
-    const options = { quality: 0.5, base64: true }
-    if(camera) {
-      const data = await camera.current.takePictureAsync(options)
-      setPhoto(data)
-      setIsVisible(false)
-    }
-  }
+  const editData = () => setEditable(!editable)
 
   const onSavePress = () => {
     const formData = new FormData()
@@ -62,13 +63,13 @@ const ProfileEdit = ({ navigation, route }) => {
       timeout: 20000,
       headers: {
         'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json',
         'Content-Type': 'multipart/form-data'
       }
     })
     .then( res => {
-      navigation.replace('Profile', {
-        signinMethod
-      })
+      navigation.pop(2)
+      navigation.replace('Profile')
     })
     .catch( err => {
       console.log({err})
@@ -86,13 +87,15 @@ const ProfileEdit = ({ navigation, route }) => {
           >
             <View style={styles.camFlipContainer}>
               <TouchableOpacity style={styles.btnFlip} onPress={toggleCamera}>
-                <Icon name="rotate-3d-variant" size={15} />
+                <MaterialCommunitry name="rotate-3d-variant" size={15} />
               </TouchableOpacity>
             </View>
 
+            {/* <View style={styles.round} />
+            <View style={styles.rectangle} /> */}
             <View style={styles.btnTakeContainer}>
               <TouchableOpacity style={styles.btnTake} onPress={takePicture}>
-                <Icon name="camera-outline" size={30} />
+                <Icon name="camera" size={30} />
               </TouchableOpacity>
             </View>
 
@@ -103,28 +106,26 @@ const ProfileEdit = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={styles.profileContainer}>
-        <Image source={photo ? {uri: photo.uri} : { uri: user.photo}} style={styles.photo} />
+        <Image source={photo ? {uri: photo.uri} : { uri: route.params.user.photo}} style={styles.photo} />
         <TouchableOpacity style={styles.rounded} activeOpacity={0.7} onPress={() => setIsVisible(true)}>
-          <Icon name="camera-outline" size={15} color={Colors.white} />
+          <Icon name="camera" size={15} color={colors.white} />
         </TouchableOpacity>
       </View>
-
       <View style={styles.detailUser}>
-        <View>
+        <View style={styles.editContainer}>
           <View>
             <Text style={styles.editTitle}>Full Name</Text>
-            <View>
+            <View style={styles.editItem}>
               <TextInput
                 ref={input}
                 value={name}
                 editable={editable}
-                color={Colors.black}
-                underlineColorAndroid={editable ? Colors.lightGrey : null}
+                style={styles.input}
                 onChangeText={(value) => setName(value)}
               />
-              <Icon name={editable ? "pencil-off-outline" : "pencil-outline"} size={20} style={styles.editIcon} onPress={() => setEditable(!editable)} />
+              <Icon name="edit-2" size={20} color={colors.grey} onPress={editData} />
             </View>
           </View>
 
@@ -135,9 +136,10 @@ const ProfileEdit = ({ navigation, route }) => {
                 ref={input}
                 value={email}
                 editable={false}
-                color={Colors.black}
+                style={styles.input}
                 onChangeText={(value) => setEmail(value)}
               />
+              {/* <Icon name="edit-2" size={20} color={colors.grey} onPress={editData} /> */}
             </View>
           </View>
 
@@ -156,3 +158,72 @@ const ProfileEdit = ({ navigation, route }) => {
 }
 
 export default ProfileEdit
+
+const styles = StyleSheet.create({
+  camFlipContainer: {
+    backgroundColor: colors.white,
+    elevation: 5,
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginTop: 10,
+  },
+  btnTakeContainer: {
+    position: 'absolute',
+    bottom: 50,
+    left: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    elevation: 5,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+
+  container: {
+    flex: 1,
+    paddingHorizontal: 10
+  },
+  profileContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  photo: {
+    width: 100, 
+    height: 100,
+    borderRadius: 50
+  },
+  rounded: {
+    position: 'absolute',
+    bottom: 30,
+    backgroundColor: colors.grey,
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  editTitle: {
+    fontSize: 12,
+    color: colors.grey
+  },
+  editItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  saveBtn: {
+    backgroundColor: colors.blue,
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 7,
+    elevation: 5
+  },
+  btnSaveText: {
+    fontWeight: 'bold',
+    color: colors.white,
+  }
+})

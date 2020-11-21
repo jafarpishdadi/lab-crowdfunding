@@ -3,33 +3,36 @@ import { StyleSheet, Text, View, StatusBar, Image, TouchableOpacity } from 'reac
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SanberUri from '../../api/SanberUri';
-import Colors from '../../styles/Colors';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import styles from './styles'
+import SanberUri from '../../api/SanberUri';
 
 
 const Profile = ({ navigation, route }) => {
 
-  const [user, setUser] = useState({})
-  const signinMethod = route.params.signinMethod
+  const [user, setUser] = useState(null)
+  const [dataStorage, setDataStorage] = useState(null)
 
   useEffect(() => {
-    if (signinMethod === 'GOOGLE') getGoogleUser()
-    else if(signinMethod === 'SANBER') getSanberUser()
+    const getDataStorage = async () => {
+      try {
+        let token = await AsyncStorage.getItem('token')
+        let signinMethod = await AsyncStorage.getItem('signin-method')
+  
+        let res = { token, signinMethod }
+        setDataStorage(res)
+        if (signinMethod === 'GOOGLE') getGoogleUser()
+        else if(signinMethod === 'SANBER') getSanberUser(token)
+  
+        return res
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    getDataStorage()
   }, [])
 
-  const getToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token')
-      return token
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const getSanberUser = async () => {
-    const token = await getToken()
+  const getSanberUser = async (token) => {
 
     Axios.get(`${SanberUri.api}/profile/get-profile`, {
       timeout: 20000,
@@ -52,52 +55,61 @@ const Profile = ({ navigation, route }) => {
     setUser(userInfo.user)
   }
 
+  const onEditProfilePress = () => {
+    navigation.navigate('ProfileEdit', {
+      user
+    })
+  }
+
+  const onHelpPress = () => {
+    navigation.navigate('Help')
+  }
+
+
   const onLogoutPress = async () => {
     if (user) {
       try {
-        if (signinMethod === 'GOOGLE') {
+        if (dataStorage.signinMethod === 'GOOGLE') {
           await GoogleSignin.revokeAccess()
           await GoogleSignin.signOut()
   
-        } else if(signinMethod === 'SANBER') {
+        } else if(dataStorage.signinMethod === 'SANBER') {
           await AsyncStorage.removeItem('token')
         }  
       } catch (err) {
         console.log(err)
       }
     }
-    navigation.replace('Login')
-  }
-
-  const onEditProfilePress = () => {
-    navigation.navigate('ProfileEdit', {
-      user,
-      signinMethod
+    await AsyncStorage.removeItem('signin-method')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }]
     })
   }
+
 
   
   return (
     <>
-      <StatusBar backgroundColor={Colors.blue} barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor="#00BCD4" />
       {/* Toolbar */}
       <View >
-        { signinMethod === 'SANBER' 
-        ?
-        <TouchableOpacity style={styles.profile} onPress={onEditProfilePress}>
-          <Image source={{uri: user.photo}} style={styles.img} />
-          <Text style={styles.profileText}>{user && user.name} {'\n'}
-            <Text style={styles.profileTextSub}>{user && user.email}</Text>
-          </Text>
-        </TouchableOpacity>
-        :
-        <View style={styles.profile}>
-          <Image source={{uri: user.photo || 'http://placeimg.com/100/100/people' }} style={styles.img} />
-          <Text style={styles.profileText}>{user && user.name} {'\n'}
-            <Text style={styles.profileTextSub}>{user && user.email}</Text>
-          </Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Account</Text>
         </View>
 
+        { user
+          ?
+          <TouchableOpacity style={styles.profile} onPress={onEditProfilePress}>
+            <Image source={{uri: user && user.photo}} style={styles.img} />
+            <Text style={styles.profileText}>{user && user.name} {'\n'}
+              <Text style={styles.profileTextSub}>{user && user.email}</Text>
+            </Text>
+          </TouchableOpacity>
+          :
+          <View style={styles.profile}>
+            <Icon name="people" size={18} color="#000" />
+          </View>
         }
       </View>
 
@@ -121,7 +133,7 @@ const Profile = ({ navigation, route }) => {
             <Text style={styles.menuText}>Settings</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onHelpPress}>
           <View style={styles.subItem}>
             <Icon name="question" size={18} color="#000" />
             <Text style={styles.menuText}>Help Center</Text>
@@ -149,3 +161,57 @@ const Profile = ({ navigation, route }) => {
 }
 
 export default Profile
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#00BCD4',
+  },
+  headerText: {
+    margin: 20,
+    fontSize: 24,
+    color: '#fff',
+  },
+  profile: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  img: {
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 30,
+  },
+  profileText: {
+    marginLeft: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  profileTextSub: {
+    fontSize: 14,
+    fontWeight: 'normal',
+  },
+  menu: {
+    marginVertical: 4,
+  },
+  subItemSaldo: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    padding: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subItem: {
+    marginBottom: 4,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    padding: 20,
+    alignItems: 'center',
+  },
+  menuText: {
+    marginLeft: 24,
+    fontSize: 14,
+  },
+
+});

@@ -67,10 +67,14 @@ const ProfileEdit = ({ navigation, route }) => {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data'
       }
-    })
-    .then( res => {
-      navigation.pop(2)
-      navigation.replace('Profile')
+    }).then( res => {
+      console.log("onSavePress -> res", res)
+      alert('Profile has been updated')
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Profile'}]
+      })
+
     })
     .catch( err => {
       console.log({err})

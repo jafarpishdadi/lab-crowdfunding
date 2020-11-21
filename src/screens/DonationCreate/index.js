@@ -8,7 +8,7 @@ import { getToken } from '../../bin/LocalStorage';
 import Colors from '../../styles/Colors';
 import { TextInputMask } from 'react-native-masked-text'
 
-const DonationCreate = () => {
+const DonationCreate = ({ navigation }) => {
 
   let camera =  useRef(null)
   const [title, setTitle] = useState('')
@@ -28,10 +28,6 @@ const DonationCreate = () => {
       setIsVisible(false)
     }
   }
-
-  useEffect(() => {
-    console.log('total ', total)
-  }, [total])
 
   const onSavePress = async () => {
     const token = await getToken()
@@ -57,9 +53,13 @@ const DonationCreate = () => {
     .then( res => {
     console.log("onSavePress -> res", res)
       alert('Fundraise has been created')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }]
+      })
     })
     .catch( err => {
-      console.log("onSavePress -> err", err)
+      console.log("onSavePress -> err", {err})
       alert('Creating Fundraise has failed')
     })
   }

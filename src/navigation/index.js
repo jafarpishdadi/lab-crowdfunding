@@ -18,7 +18,8 @@ import Colors from '../styles/Colors';
 import Payment from '../screens/Payment';
 import DonationDetail from '../screens/DonationDetail';
 import Help from '../screens/Help';
-import Statistic from '../screens/Statistic/index';
+import Statistic from '../screens/Statistic';
+import Inbox from '../screens/Inbox';
 
 
 const Stack = createStackNavigator()
@@ -70,7 +71,7 @@ const DashboardTab = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Inbox"
         component={Inbox}
         options={{
@@ -79,7 +80,7 @@ const DashboardTab = () => {
             <MaterialCommunityIcons name="chat-processing-outline" color={color} size={26} />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="ProfileTab"
         component={ProfileNavigation}

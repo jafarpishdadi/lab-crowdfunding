@@ -20,6 +20,8 @@ import DonationDetail from '../screens/DonationDetail';
 import Help from '../screens/Help';
 import Statistic from '../screens/Statistic';
 import Inbox from '../screens/Inbox';
+import DonationHistory from '../screens/DonationHistory';
+import DonationCreate from '../screens/DonationCreate';
 
 
 const Stack = createStackNavigator()
@@ -50,6 +52,8 @@ const HomeNavigation = () => {
         }} 
       />
       <Stack.Screen name="Statistic" component={Statistic} options={{ headerShown: true }} />
+      <Stack.Screen name="DonationHistory" component={DonationHistory} options={{ headerShown: true }} />
+      <Stack.Screen name="DonationCreate" component={DonationCreate} options={{ headerShown: true }} />
     </Stack.Navigator>
   )
 }
@@ -96,7 +100,6 @@ const DashboardTab = () => {
 }
 
 const MainNavigation = ({ initialRouteName }) => {
-console.log("MainNavigation -> initialRouteName", initialRouteName)
   
   return (
     <Stack.Navigator initialRouteName={initialRouteName}>

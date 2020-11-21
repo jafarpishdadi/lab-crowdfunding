@@ -7,6 +7,7 @@ import { RNCamera } from 'react-native-camera';
 import MaterialCommunitry from 'react-native-vector-icons/MaterialCommunityIcons'
 import Axios from 'axios'
 import SanberUri from '../../api/SanberUri'
+import styles from './styles'
 
 
 const ProfileEdit = ({ navigation, route }) => {
@@ -158,72 +159,3 @@ const ProfileEdit = ({ navigation, route }) => {
 }
 
 export default ProfileEdit
-
-const styles = StyleSheet.create({
-  camFlipContainer: {
-    backgroundColor: colors.white,
-    elevation: 5,
-    width: 35,
-    height: 35,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 20,
-    marginTop: 10,
-  },
-  btnTakeContainer: {
-    position: 'absolute',
-    bottom: 50,
-    left: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    elevation: 5,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-
-  container: {
-    flex: 1,
-    paddingHorizontal: 10
-  },
-  profileContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  photo: {
-    width: 100, 
-    height: 100,
-    borderRadius: 50
-  },
-  rounded: {
-    position: 'absolute',
-    bottom: 30,
-    backgroundColor: colors.grey,
-    width: 35,
-    height: 35,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  editTitle: {
-    fontSize: 12,
-    color: colors.grey
-  },
-  editItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  saveBtn: {
-    backgroundColor: colors.blue,
-    alignItems: 'center',
-    padding: 15,
-    borderRadius: 7,
-    elevation: 5
-  },
-  btnSaveText: {
-    fontWeight: 'bold',
-    color: colors.white,
-  }
-})

@@ -7,6 +7,7 @@ import Axios from 'axios';
 import SanberUri from '../../api/SanberUri';
 import { FlatList } from 'react-native-gesture-handler';
 import { SliderBox } from 'react-native-image-slider-box' 
+import styles from './styles';
 
 const images = [         
   "https://placeimg.com/300/200/people",                 
@@ -134,14 +135,14 @@ const Home = ({ navigation, route }) => {
             <MaterialCommunityIcons name="chart-bar" color={Colors.black} size={26} />
             <Text>Statistics</Text>
           </TouchableOpacity>
-          <View style={styles.menuWrapper}>
-            <MaterialCommunityIcons name="history" color={Colors.black} size={26} />
+          <TouchableOpacity onPress={() => navigation.navigate('DonationHistory')}  style={styles.menuWrapper}>
+            <MaterialCommunityIcons name="script-text-outline" color={Colors.black} size={26} />
             <Text>History</Text>
-          </View>
-          <View style={styles.menuWrapper}>
-            <MaterialCommunityIcons name="help-circle-outline" color={Colors.black} size={26} />
-            <Text>Support</Text>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('DonationCreate')}  style={styles.menuWrapper}>
+            <MaterialCommunityIcons name="heart-plus-outline" color={Colors.black} size={26} />
+            <Text>Fundraise</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -160,76 +161,3 @@ const Home = ({ navigation, route }) => {
 }
 
 export default Home
-
-const styles = StyleSheet.create({
-  toolbarContainer: {
-    backgroundColor: Colors.blue,
-    height: 130,
-    paddingHorizontal: 5,
-    justifyContent: 'space-between',
-    marginBottom: 50,
-  },
-  toolbarTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-  },
-  searchField: {
-    width: '70%',
-    height: 40,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: Colors.white,
-    color: Colors.white,
-    paddingHorizontal: 10,
-  },
-  toolbarBottom: {
-    backgroundColor: Colors.white,
-    width: '95%',
-    padding: 20,
-    marginBottom: -35,
-    alignSelf: 'center',
-    borderRadius: 10,
-    elevation: 3,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  imageSlider: {
-    height: 200,
-    marginHorizontal: 10,
-    borderRadius: 10,
-  },
-  headlineMenu: {
-    backgroundColor: Colors.white,
-    width: '95%',
-    height: 70,
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  menuWrapper: {
-    alignItems: 'center'
-  },
-  fundraisingItem: {
-    backgroundColor: Colors.white,
-    width: 200,
-    borderRadius: 15,
-    margin: 5,
-    marginBottom: 10,
-    elevation: 5,
-  },
-  fundraisingItemImage: {
-    width: 200, 
-    height: 100,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-  },
-  fundraisingItemText: {
-    fontSize: 12,
-    margin: 10,
-  }
-})
-

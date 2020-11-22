@@ -5,10 +5,10 @@ import Colors from '../../styles/Colors';
 export default StyleSheet.create({
   toolbarContainer: {
     backgroundColor: Colors.blue,
-    height: 130,
+    height: 120,
     paddingHorizontal: 5,
     justifyContent: 'space-between',
-    marginBottom: 50,
+    zIndex: 1
   },
   toolbarTop: {
     flexDirection: 'row',
@@ -28,17 +28,21 @@ export default StyleSheet.create({
   toolbarBottom: {
     backgroundColor: Colors.white,
     width: '95%',
-    padding: 20,
+    padding: 10,
+    paddingHorizontal: 20,
     marginBottom: -35,
     alignSelf: 'center',
     borderRadius: 10,
     elevation: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  toolbarBottomItem: {
+    alignItems: 'center', borderRadius: 5, padding: 5,
   },
   imageSlider: {
-    height: 200,
+    height: 180,
     marginHorizontal: 10,
     borderRadius: 10,
   },

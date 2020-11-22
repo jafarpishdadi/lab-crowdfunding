@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Modal } fro
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import SanberUri from '../../api/SanberUri';
-import { getToken } from '../../bin/LocalStorage';
+import { getToken } from '../../bin/Helper';
 import Colors from '../../styles/Colors';
 import { TextInputMask } from 'react-native-masked-text'
 
@@ -13,7 +13,7 @@ const DonationCreate = ({ navigation }) => {
   let camera =  useRef(null)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [total, setTotal] = useState('0')
+  const [total, setTotal] = useState('')
   const [photo, setPhoto] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
   const [type, setType] = useState('back')
@@ -130,6 +130,7 @@ const DonationCreate = ({ navigation }) => {
             precision: 0,
           }}
           underlineColorAndroid={Colors.lightGrey}
+          placeholder= 'Rp. 0'
         />
         
         <TouchableOpacity style={styles.donateBtn} onPress={onSavePress}>

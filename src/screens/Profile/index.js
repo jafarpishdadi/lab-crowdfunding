@@ -5,6 +5,7 @@ import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import SanberUri from '../../api/SanberUri';
+import Colors from '../../styles/Colors';
 
 
 const Profile = ({ navigation, route }) => {
@@ -91,7 +92,7 @@ const Profile = ({ navigation, route }) => {
   
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#00BCD4" />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.blue} />
       {/* Toolbar */}
       <View >
         <View style={styles.header}>
@@ -108,7 +109,7 @@ const Profile = ({ navigation, route }) => {
           </TouchableOpacity>
           :
           <View style={styles.profile}>
-            <Icon name="people" size={18} color="#000" />
+            <Icon name="people" size={18} color={Colors.black} />
           </View>
         }
       </View>
@@ -117,7 +118,7 @@ const Profile = ({ navigation, route }) => {
       <View style={styles.menu}>
         <TouchableOpacity>
           <View style={styles.subItemSaldo}>
-            <Icon name="wallet" size={18} color="#000" />
+            <Icon name="wallet" size={18} color={Colors.black} />
             <View style={{marginLeft: -130}}>
               <Text style={styles.menuText}>Balance</Text>
             </View>
@@ -129,19 +130,19 @@ const Profile = ({ navigation, route }) => {
       <View style={styles.menu}>
         <TouchableOpacity>
           <View style={styles.subItem}>
-            <Icon name="settings" size={18} color="#000" />
+            <Icon name="settings" size={18} color={Colors.black} />
             <Text style={styles.menuText}>Settings</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={onHelpPress}>
           <View style={styles.subItem}>
-            <Icon name="question" size={18} color="#000" />
+            <Icon name="question" size={18} color={Colors.black} />
             <Text style={styles.menuText}>Help Center</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity>
           <View style={styles.subItem}>
-            <Icon name="doc" size={18} color="#000" />
+            <Icon name="doc" size={18} color={Colors.black} />
             <Text style={styles.menuText}>Term & Condition</Text>
           </View>
         </TouchableOpacity>
@@ -150,7 +151,7 @@ const Profile = ({ navigation, route }) => {
       <View style={styles.menu}>
         <TouchableOpacity onPress={onLogoutPress}>
           <View style={styles.subItem}>
-            <Icon name="logout" size={18} color="#000" />
+            <Icon name="logout" size={18} color={Colors.black} />
             <Text style={styles.menuText}>Logout</Text>
           </View>
         </TouchableOpacity>        
@@ -164,18 +165,18 @@ export default Profile
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: Colors.blue,
   },
   headerText: {
     margin: 20,
     fontSize: 24,
-    color: '#fff',
+    color: Colors.white,
   },
   profile: {
     alignItems: 'center',
     flexDirection: 'row',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
   },
   img: {
     width: 60,
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   subItemSaldo: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     flexDirection: 'row',
     padding: 20,
     justifyContent: 'space-between',
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
   subItem: {
     marginBottom: 4,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     flexDirection: 'row',
     padding: 20,
     alignItems: 'center',

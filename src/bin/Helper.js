@@ -8,3 +8,5 @@ export const getToken = async () => {
     console.log("getToken -> err", err)
   }
 }
+
+export const getFormattedNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, TextInput, Image } from 'react-native'
+import { Text, View, TouchableOpacity, StatusBar, TextInput, Image, Modal } from 'react-native'
 import Colors from '../../styles/Colors'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,7 @@ import SanberUri from '../../api/SanberUri';
 import { FlatList } from 'react-native-gesture-handler';
 import { SliderBox } from 'react-native-image-slider-box' 
 import styles from './styles';
+import Topup from '../../components/Topup';
 
 const images = [         
   "https://placeimg.com/300/200/people",                 
@@ -20,6 +21,7 @@ const Home = ({ navigation, route }) => {
 
   const [donations, setDonations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     const getDataStorage = async () => {
@@ -78,6 +80,19 @@ const Home = ({ navigation, route }) => {
     )
   }
 
+  const donationModal = () => {
+    return (
+
+      <Modal 
+        visible={isVisible} 
+        transparent={true}
+        onRequestClose={() => setIsVisible(false)}
+      >
+        <Topup navigation={navigation} setModal={setIsVisible} donationInfo={{id: new Date().getTime()}} />
+      </Modal>
+    )
+  }
+
   if (isLoading) return null
   return (
     <>
@@ -96,26 +111,29 @@ const Home = ({ navigation, route }) => {
         </View>
 
         <View style={styles.toolbarBottom}>
-          <View>
-            <MaterialCommunityIcons name="wallet-outline" color={Colors.black} size={26} />
-            <Text>Balance</Text>
+          <View style={[styles.toolbarBottomItem, { backgroundColor: Colors.blue}]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+              <MaterialCommunityIcons name="wallet-outline" color={Colors.white} size={26} />
+              <Text style={{ color: Colors.white }}>Balance</Text>
+            </View>
+            <Text style={{ color: Colors.white, fontWeight: 'bold' }}>Rp. 100 000</Text>
           </View>
-          <View>
+          <TouchableOpacity style={styles.toolbarBottomItem} onPress={() => setIsVisible(true)}>
             <MaterialCommunityIcons name="plus-box-outline" color={Colors.black} size={26} />
             <Text>Topup</Text>
-          </View>
-          <View>
+          </TouchableOpacity>
+          <View style={styles.toolbarBottomItem}>
             <MaterialCommunityIcons name="history" color={Colors.black} size={26} />
             <Text>History</Text>
           </View>
-          <View>
+          <View style={styles.toolbarBottomItem}>
             <MaterialCommunityIcons name="view-grid-outline" color={Colors.black} size={26} />
             <Text>Other</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.imageSliderWrapper}>
+      <View style={{ backgroundColor: Colors.white, paddingTop: 50 }}>
         <SliderBox 
           images={images} 
           autoplay={true} 
@@ -125,7 +143,7 @@ const Home = ({ navigation, route }) => {
         />
       </View>
 
-      <View>
+      <View style={{ backgroundColor: Colors.white, elevation: 3 }}>
         <View style={styles.headlineMenu}>
           <TouchableOpacity onPress={() => navigation.navigate('Donation')} style={styles.menuWrapper}>
             <MaterialCommunityIcons name="hand-heart" color={Colors.black} size={26} />
@@ -146,15 +164,18 @@ const Home = ({ navigation, route }) => {
         </View>
       </View>
 
-      <View>
-        <Text>Urgent Fundraising</Text>
+      <View style={{ backgroundColor: Colors.white, marginTop: 10, padding: 5, elevation: 3 }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 16}}>Urgent Funding</Text>
         <FlatList 
           data={donations} 
           renderItem={donationItem}
           keyExtractor={(i, index) => index.toString()}
           horizontal={true}
+          style={{ marginTop: 10}}
         />        
       </View>
+
+      { donationModal() }
 
     </>
   )

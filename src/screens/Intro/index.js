@@ -40,8 +40,8 @@ const Intro = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.green} barStyle="light-content" />
       <View style={styles.container}>
-        <StatusBar backgroundColor={Colors.green} barStyle="light-content" />
         <View style={styles.textLogoContainer}>
           <Text style={styles.textLogo}>Crowd Funding</Text>
         </View>

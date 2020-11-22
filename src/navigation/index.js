@@ -52,8 +52,8 @@ const HomeNavigation = () => {
         }} 
       />
       <Stack.Screen name="Statistic" component={Statistic} options={{ headerShown: true }} />
-      <Stack.Screen name="DonationHistory" component={DonationHistory} options={{ headerShown: true }} />
-      <Stack.Screen name="DonationCreate" component={DonationCreate} options={{ headerShown: true }} />
+      <Stack.Screen name="DonationHistory" component={DonationHistory} options={{ headerShown: true, title: 'Donation History' }} />
+      <Stack.Screen name="DonationCreate" component={DonationCreate} options={{ headerShown: true, title: 'Create Fundraise' }} />
     </Stack.Navigator>
   )
 }

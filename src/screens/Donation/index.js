@@ -4,9 +4,13 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react
 import Colors from '../../styles/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
+import { getFormattedNumber } from '../../bin/Helper';
 
 
 const Donation = ({ navigation }) => {
+  navigation.dangerouslyGetParent().setOptions({
+    tabBarVisible: false
+  });
 
   const [donations, setDonations] = useState([])
   useEffect(() => {
@@ -56,7 +60,7 @@ const Donation = ({ navigation }) => {
           <Text style={styles.textSub}>{item.user.name}</Text>
           <View style={styles.barOut}><View style={styles.barIn}></View></View>
           <Text style={styles.textSub}>Required money</Text>
-          <Text style={styles.textTitle}>Rp. {item.donation.toLocaleString()}</Text>
+          <Text style={styles.textTitle}>Rp. {getFormattedNumber(item.donation)}</Text>
         </View>
       </TouchableOpacity>
     )

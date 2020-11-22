@@ -6,6 +6,7 @@ import SanberUri from '../../api/SanberUri'
 import Axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Topup from '../../components/Topup'
+import { getFormattedNumber } from '../../bin/Helper'
 
 const DonationDetail = ({ navigation, route }) => {
 
@@ -20,7 +21,7 @@ const DonationDetail = ({ navigation, route }) => {
         transparent={true}
         onRequestClose={() => setIsVisible(false)}
       >
-        <Topup navigation={navigation} donationInfo={donationInfo} />
+        <Topup navigation={navigation} setModal={setIsVisible} donationInfo={donationInfo} />
       </Modal>
     )
   }
@@ -32,7 +33,7 @@ const DonationDetail = ({ navigation, route }) => {
 
       <View style={styles.descWrapper}>
         <Text style={styles.textTitle}>{donationInfo.title}</Text>
-        <Text style={styles.textSub}>Required fundraising Rp. {donationInfo.donation.toLocaleString()}</Text>
+        <Text style={styles.textSub}>Required fundraising Rp. {getFormattedNumber(donationInfo.donation)}</Text>
         <Text style={styles.textSubBold}>Description</Text>
         <Text>{donationInfo.description}</Text>
 

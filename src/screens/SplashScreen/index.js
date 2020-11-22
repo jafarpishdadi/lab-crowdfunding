@@ -30,8 +30,8 @@ const SplashScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+    <StatusBar backgroundColor={Colors.green} barStyle="light-content" />
       <View style={styles.container}>
-        <StatusBar hidden={true} />
         <Animated.View style={[styles.quotesContainer, { opacity: fadeOut }]}>
           <Text style={styles.quotes}>"This will be amazing app someday"</Text>
         </Animated.View>

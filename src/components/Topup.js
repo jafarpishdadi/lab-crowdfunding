@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import SanberUri from '../api/SanberUri'
 import Colors from '../styles/Colors'
+import { TextInputMask } from 'react-native-masked-text'
+import { getFormattedNumber } from '../bin/Helper'
 
 const TOPUP_LIST = [
   { id: 'topup10k', total: 10000 },
@@ -14,9 +16,9 @@ const TOPUP_LIST = [
   { id: 'topup500k', total: 500000 },
 ]
 
-const Topup = ({ navigation, donationInfo }) => {
+const Topup = ({ navigation, donationInfo, setModal }) => {
 
-  const [donation, setDonation] = useState(null)
+  const [donation, setDonation] = useState('')
   const [topupSelected, setTopupSelected] = useState(null)
   
   const getToken = async () => {
@@ -56,8 +58,9 @@ const Topup = ({ navigation, donationInfo }) => {
     .then(res => {
     console.log("onPayPress -> res", res)
       if(res) {
+        setModal(false)
         const data = res.data.data
-        navigation.replace('Payment', data)
+        navigation.navigate('Payment', data)
       }
     })
     .catch(err => {
@@ -77,7 +80,7 @@ const Topup = ({ navigation, donationInfo }) => {
         style={topupSelected === index ? [styles.donateRpBtn, styles.active] : styles.donateRpBtn }
         onPress={() => onTopupPress(index)}
       >
-        <Text>Rp. {item.total.toLocaleString()}</Text>
+        <Text>Rp. {getFormattedNumber(item.total)}</Text>
       </TouchableOpacity>
     )
   }
@@ -86,23 +89,19 @@ const Topup = ({ navigation, donationInfo }) => {
     <View style={styles.modalContainer}>
       <View style={styles.modalWrapper}>
         <Text>Enter Your Donation</Text>
-        <View>
-          <TextInput
-            value={donation}
-            onChangeText={(value) => { setDonation(value), setTopupSelected(null)  }}
-            underlineColorAndroid={Colors.lightGrey}
-            placeholder="Enter your nominal"
-            keyboardType="numeric"
-            style={{
-              paddingLeft: 40
-            }}
-          />
-          <Text style={{
-            position: 'absolute',
-            top: 13,
-            left: 5,
-          }}>Rp.</Text>
-        </View>
+        <TextInputMask
+          type={'money'}
+          value={donation}
+          includeRawValueInChangeText={true}
+          onChangeText={(masked, raw) => {setDonation(raw.toString()); setTopupSelected(null)} }
+          options={{
+            unit: 'Rp. ',
+            delimiter: ' ',
+            precision: 0,
+          }}
+          underlineColorAndroid={Colors.lightGrey}
+          placeholder='Rp. 0'
+        />
         
         <FlatList
             numColumns={3}                  // set number of columns 
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   active: {
-    backgroundColor: Colors.blue
+    backgroundColor: Colors.cyan
   },
   donateBtn: {
     padding: 10,

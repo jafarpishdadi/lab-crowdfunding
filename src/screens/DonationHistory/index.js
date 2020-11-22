@@ -2,7 +2,7 @@ import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import SanberUri from '../../api/SanberUri'
-import { getToken } from '../../bin/LocalStorage'
+import { getFormattedNumber, getToken } from '../../bin/Helper'
 import Colors from '../../styles/Colors';
 
 const DonationHistory = () => {
@@ -38,7 +38,7 @@ const DonationHistory = () => {
 
     return (
       <View style={styles.historyItem}>
-        <Text style={styles.historyTotal}>Total Rp. {item.amount.toLocaleString()}</Text>
+        <Text style={styles.historyTotal}>Total Rp. {getFormattedNumber(item.amount)}</Text>
         <Text>Donation Code : {item.order_id}</Text>
         <Text>Date : {item.created_at}</Text>
       </View>

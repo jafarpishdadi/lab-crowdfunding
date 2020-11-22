@@ -69,8 +69,8 @@ const Login = ({ navigation }) => {
     Axios.post(`${SanberUri.api}/auth/login`, data, {
       timeout: 20000
     })
-    .then((res) => {
-      saveLoginParams('SANBER', res.data.data.token)
+    .then(async (res) => {
+      await saveLoginParams('SANBER', res.data.data.token)
       navigation.reset({
         index: 0,
         routes: [{ name: 'DashboardTab'}]

@@ -6,12 +6,13 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StatusBar,
 } from 'react-native';
 import AppNavigation from './navigation';
 import firebase from '@react-native-firebase/app'
+import OneSignal from 'react-native-onesignal'
 
 
 var firebaseConfig = {
@@ -29,6 +30,40 @@ if (!firebase.apps.length) {
 }
 
 const App: () => React$Node = () => {
+
+  useEffect(() => {
+    OneSignal.setLogLevel(6, 0);
+
+    OneSignal.init("cd388ec0-9da3-4258-a65a-c686941c941e", {
+      kOSSettingsKeyAutoPrompt : false, 
+      kOSSettingsKeyInAppLaunchURL: false, 
+      kOSSettingsKeyInFocusDisplayOption:2
+    });
+    OneSignal.inFocusDisplaying(2);
+
+    OneSignal.addEventListener('received', onReceived)
+    OneSignal.addEventListener('opened', onOpened)
+    OneSignal.addEventListener('ids', onIds)
+
+    return () => {
+      OneSignal.removeEventListener('received', onReceived)
+      OneSignal.removeEventListener('opened', onOpened)
+      OneSignal.removeEventListener('ids', onIds)
+    }
+  }, [])
+
+  const onReceived = (notification) => { 
+    console.log("🚀 ~ file: App.js ~ line 52 ~ onReceived ~ notification", notification)
+  }
+
+  const onOpened = (openResult) => {
+    console.log("🚀 ~ file: App.js ~ line 56 ~ onOpened ~ openResult", openResult)
+  }
+
+  const onIds = (device) => {
+    console.log("🚀 ~ file: App.js ~ line 60 ~ onIds ~ device", device)
+  }
+    
   return (
     <>
       <StatusBar barStyle="dark-content" />

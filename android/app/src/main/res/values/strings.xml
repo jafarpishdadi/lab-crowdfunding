@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FudiCrowdFunding</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">l2WGZpbPyJGddwtGAS0Y9mwetNKRhmuVMqng_</string>
 </resources>

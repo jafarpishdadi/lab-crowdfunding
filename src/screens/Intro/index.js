@@ -9,17 +9,17 @@ import styles from './styles';
 const data = [
   {
     id: 1,
-    image: {uri: 'http://placeimg.com/480/480/nature'},
+    image: require('../../assets/images/intro-1.jpeg'),
     description: 'Just imagine, this is crowd funding illustration.\n Which make you so interest',
   },
   {
     id: 2,
-    image: {uri: 'http://placeimg.com/480/480/people'},
+    image: require('../../assets/images/intro-2.jpeg'),
     description: 'Just imagine, this is crowd funding illustration.\n Which make you feel like helping'
   },
   {
     id: 3,
-    image: {uri: 'http://placeimg.com/480/480/animals'},
+    image: require('../../assets/images/intro-3.jpeg'),
     description: 'Just imagine, this is crowd funding illustration.\n Which make you sure to donate',
   },
 

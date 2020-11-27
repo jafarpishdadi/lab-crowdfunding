@@ -101,7 +101,7 @@ const Profile = ({ navigation, route }) => {
 
         { user
           ?
-          <TouchableOpacity style={styles.profile} onPress={onEditProfilePress}>
+          <TouchableOpacity style={styles.profile} onPress={onEditProfilePress} disabled={dataStorage.signinMethod !== 'SANBER'}>
             <Image source={{uri: user && user.photo}} style={styles.img} />
             <Text style={styles.profileText}>{user && user.name} {'\n'}
               <Text style={styles.profileTextSub}>{user && user.email}</Text>
@@ -109,7 +109,8 @@ const Profile = ({ navigation, route }) => {
           </TouchableOpacity>
           :
           <View style={styles.profile}>
-            <Icon name="people" size={18} color={Colors.black} />
+            <Image source={require('../../assets/images/profile-placeholder.png')} style={styles.img} />
+              <Text style={styles.profileText}>No Profile Data</Text>
           </View>
         }
       </View>

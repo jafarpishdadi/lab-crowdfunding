@@ -2,6 +2,7 @@
   package="com.fudicrowdfunding">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Include this only if you are planning to use the camera roll -->

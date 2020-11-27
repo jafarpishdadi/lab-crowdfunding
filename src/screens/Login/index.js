@@ -94,7 +94,7 @@ const Login = ({ navigation }) => {
     })
     .catch(err => {
       if (err.code === "AUTHENTICATION_CANCELED") return
-
+      if (err.code === "NOT_AVAILABLE") return alert('Make sure you have Finger Print Setup')
       alert('Authentication failed')
       console.log({err})
     })

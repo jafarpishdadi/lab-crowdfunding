@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react
 import Colors from '../../styles/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SanberUri from '../../api/SanberUri';
-import { getFormattedNumber } from '../../bin/Helper';
+import { getFormattedNumber, getToken } from '../../bin/Helper';
 
 
 const Donation = ({ navigation }) => {
@@ -16,15 +16,6 @@ const Donation = ({ navigation }) => {
   useEffect(() => {
     getDonations()
   }, [])
-
-  const getToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token')
-      return token
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const getDonations = async () => {
     const token = await getToken()

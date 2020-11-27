@@ -5,6 +5,7 @@ import database from '@react-native-firebase/database'
 import Axios from 'axios'
 import { GiftedChat } from 'react-native-gifted-chat'
 import SanberUri from '../../api/SanberUri'
+import { getToken } from '../../bin/Helper'
 
 const Inbox = () => {
 
@@ -13,19 +14,8 @@ const Inbox = () => {
 
   useEffect(() => {
     console.log('Start component')
-    const getToken = async() => {
-      try {
-        const token = await AsyncStorage.getItem('token')
-        if (token) {
-          return getProfile(token)
-        }
-      }
-      catch (err) {
-        console.log("Inbox -> err", err)
-      }
-    }
     
-    getToken()
+    getProfile()
     onRef()
 
     return () => {
@@ -37,7 +27,9 @@ const Inbox = () => {
   }, [])
 
 
-  const getProfile = (token) => {
+  const getProfile = async () => {
+    const token = await getToken()
+
     Axios.get(`${SanberUri.api}/profile/get-profile`, {
       headers: {
         'Authorization': 'Bearer '+ token,

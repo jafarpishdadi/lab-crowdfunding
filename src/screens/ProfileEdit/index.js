@@ -8,6 +8,7 @@ import MaterialCommunitry from 'react-native-vector-icons/MaterialCommunityIcons
 import Axios from 'axios'
 import SanberUri from '../../api/SanberUri'
 import styles from './styles'
+import { getToken } from '../../bin/Helper'
 
 
 const ProfileEdit = ({ navigation, route }) => {
@@ -15,7 +16,6 @@ const ProfileEdit = ({ navigation, route }) => {
   let input = useRef(null)
   let camera =  useRef(null)
   const [editable, setEditable] = useState(false)
-  const [token, setToken] = useState('')
   const [name, setName] = useState(route.params.user.name)
   const [email, setEmail] = useState(route.params.user.email)
   const [isVisible, setIsVisible] = useState(false)
@@ -33,24 +33,10 @@ const ProfileEdit = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
-    getToken()
-  }, [])
-  const getToken = async() => {
-    try {
-      const token = await AsyncStorage.getItem('token')
-      if (token) {
-        setToken(token)
-      }
-
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const editData = () => setEditable(!editable)
 
-  const onSavePress = () => {
+  const onSavePress = async () => {
+    const token = await getToken()
     const formData = new FormData()
     formData.append('name', name)
     if (photo) {

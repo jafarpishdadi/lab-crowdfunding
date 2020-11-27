@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, TextInput } 
 import SanberUri from '../api/SanberUri'
 import Colors from '../styles/Colors'
 import { TextInputMask } from 'react-native-masked-text'
-import { getFormattedNumber } from '../bin/Helper'
+import { getFormattedNumber, getToken } from '../bin/Helper'
 
 const TOPUP_LIST = [
   { id: 'topup10k', total: 10000 },
@@ -20,15 +20,6 @@ const Topup = ({ navigation, donationInfo, setModal }) => {
 
   const [donation, setDonation] = useState('')
   const [topupSelected, setTopupSelected] = useState(null)
-  
-  const getToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token')
-      return token
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const onPayPress = async () => {
     const token = await getToken()

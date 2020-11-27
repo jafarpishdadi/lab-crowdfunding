@@ -27,7 +27,7 @@ import DonationCreate from '../screens/DonationCreate';
 const Stack = createStackNavigator()
 const Tab = createMaterialBottomTabNavigator()
 
-const ProfileNavigation = () => {
+const ProfileStack = () => {
   return (
     <Stack.Navigator initialRouteName="Profile">
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
@@ -37,7 +37,7 @@ const ProfileNavigation = () => {
   )
 }
 
-const HomeNavigation = () => {
+const HomeStack = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
@@ -62,17 +62,32 @@ const DashboardTab = () => {
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
-      activeColor={Colors.red}
-      labelStyle={{ fontSize: 12 }}
-    >
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+
+          if (route.name === 'HomeTab') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Inbox') {
+            iconName = focused ? 'chat-processing' : 'chat-processing-outline';
+          } else if (route.name === 'ProfileTab') {
+            iconName = focused ? 'account' : 'account-outline';
+          }
+
+          // You can return any component that you like here!
+          return <MaterialCommunityIcons name={iconName} size={26} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}>
+
       <Tab.Screen
         name="HomeTab"
-        component={HomeNavigation}
+        component={HomeStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-          ),
         }}
       />
       <Tab.Screen
@@ -80,19 +95,13 @@ const DashboardTab = () => {
         component={Inbox}
         options={{
           tabBarLabel: 'Inbox',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chat-processing-outline" color={color} size={26} />
-          ),
         }}
       />
       <Tab.Screen
         name="ProfileTab"
-        component={ProfileNavigation}
+        component={ProfileStack}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-outline" color={color} size={26} />
-          ),
         }}
       />
     </Tab.Navigator>
